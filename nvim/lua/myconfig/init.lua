@@ -6,6 +6,9 @@ local opts = { silent = true, noremap = true }
 
 vim.g.mapleader = ' '
 
+-- change this to modify where the prints will be saved to
+local savePrintsTo = "~/codeSnapshots"
+
 -- navigation keymaps
 keymap.set("n", "<C-k>", "<C-w>k", opts, { desc = "Move to above window" })
 keymap.set("n", "<C-j>", "<C-w>j", opts, { desc = "Move to below window" })
@@ -21,9 +24,9 @@ keymap.set("x", "<C-p>", "\"_dP", opts, { desc = "Don't lose a word when pasting
 -- utils keymaps
 keymap.set("n", "<leader>m", vim.cmd.make, opts, { desc = "Run make on curr dir" })
 keymap.set("n", "<Leader>h", ":DocsViewToggle<CR>", opts, { desc = "Toggle documentation" })
-keymap.set("n", "<leader>d", function() require("trouble").toggle() end, { desc = "Diagnostics (trouble)" })
 keymap.set("n", "<leader>t", ":botright split | term<cr>i", { desc = "Open terminal below" })
-keymap.set("v", "<leader>p", ":CodeSnapSave<cr>", { desc = "Print code to ~/codeSnapshots" })
+
+-- plugin keymaps
 
 -- genereal vim configs
 vim.opt.nu = true            --			line numbers
@@ -164,6 +167,8 @@ local plugins = {
 					"clangd",
 					"gopls",
 					"lua_ls",
+					"dockerls",
+					"docker_compose_language_service",
 				},
 				-- auto install configured servers
 				automatic_installation = true,
@@ -199,15 +204,14 @@ local plugins = {
 	},
 	{
 		"folke/trouble.nvim",
-		dependencies = {
-			"nvim-tree/nvim-web-devicons"
-		},
-		opts = {
-			position = "bottom",
-			icons = true, -- set web-devicons
-		},
-		action_keys = { -- keymap inside trouble
-			close = "q",
+		opts = {}, -- for default options, refer to the configuration section for custom setup.
+		cmd = "Trouble",
+		keys = {
+			{
+				"<leader>dd",
+				"<cmd>Trouble diagnostics toggle<cr>",
+				desc = "Diagnostics (Trouble)",
+			},
 		},
 	},
 	{
@@ -331,20 +335,46 @@ local plugins = {
 			})
 		end,
 	},
-	{
+	{ -- Take a screenshot / printscreen of code
 		"mistricky/codesnap.nvim",
 		build = "make",
+		keys = {
+			{
+				"<leader>c",
+				":CodeSnap<cr>",
+				mode = "x",
+				desc = "Save selected code snapshot into clipboard"
+			},
+			{
+				"<leader>hc",
+				":CodeSnapHighlight<cr>",
+				mode = "x",
+				desc = "Highlight and save selected code snapshot into clipboard"
+			},
+			{
+				"<leader>p",
+				":CodeSnapSave<cr>",
+				mode = "x",
+				desc = "Save selected code in " .. savePrintsTo -- concat in lua
+			},
+			{
+				"<leader>hp",
+				":CodeSnapSaveHighlight<cr>",
+				mode = "x",
+				desc = "Highlight and save selected code in " .. savePrintsTo -- concat in lua
+			},
+		},
 		config = function()
 			require("codesnap").setup({
+				save_path = savePrintsTo,
 				title = "",
 				bg_color = "#535c68",
 				watermark = "github.com/Grsaiago",
 				code_font_family = "CaskaydiaCove Nerd Font",
 				watermark_font_family = "CaskaydiaCove Nerd Font",
-				save_path = "~/codeSnapshots/"
+				has_line_number = true,
 			})
 		end
-
 	}
 }
 
