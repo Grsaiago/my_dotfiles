@@ -215,6 +215,17 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- If i ever need to retype files, just use this function
+local function set_filetype(pattern, filetype)
+  vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
+    pattern = pattern,
+    command = 'set filetype=' .. filetype,
+  })
+end
+
+-- docker compose files
+set_filetype({ 'docker-compose.yml', 'docker-compose.yaml', 'compose.yml', 'compose.yaml' }, 'yaml.docker-compose')
+
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
 local lazypath = vim.fn.stdpath 'data' .. '/lazy/lazy.nvim'
