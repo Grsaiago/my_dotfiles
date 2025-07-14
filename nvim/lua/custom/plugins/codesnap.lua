@@ -29,16 +29,14 @@ return {
         desc = '[P]rint with [H]ighlight [S]ave',
       },
     },
-    config = function()
-      require('codesnap').setup {
-        save_path = savePrintsTo,
-        title = '',
-        bg_color = '#535c68',
-        watermark = 'github.com/Grsaiago',
-        code_font_family = 'CaskaydiaCove Nerd Font',
-        watermark_font_family = 'CaskaydiaCove Nerd Font',
-        has_line_number = true,
-      }
-    end,
+    opts = {
+      save_path = savePrintsTo,
+      title = '',
+      bg_color = '#535c68',
+      watermark = 'github.com/Grsaiago',
+      code_font_family = 'CaskaydiaCove Nerd Font',
+      watermark_font_family = 'CaskaydiaCove Nerd Font',
+      has_line_number = true,
+    },
   },
 }

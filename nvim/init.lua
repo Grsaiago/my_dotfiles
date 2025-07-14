@@ -215,6 +215,14 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
+-- Procura por uma venv e já aciona ela caso seja um arquivo python
+vim.api.nvim_create_autocmd('FileType', {
+  pattern = { 'python' },
+  callback = function()
+    require('swenv.api').auto_venv()
+  end,
+})
+
 -- If i ever need to retype files, just use this function
 local function set_filetype(pattern, filetype)
   vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
@@ -225,6 +233,9 @@ end
 
 -- docker compose files
 set_filetype({ 'docker-compose.yml', 'docker-compose.yaml', 'compose.yml', 'compose.yaml' }, 'yaml.docker-compose')
+
+-- pest files
+set_filetype({ '*.pest' }, 'pest')
 
 -- [[ Install `lazy.nvim` plugin manager ]]
 --    See `:help lazy.nvim.txt` or https://github.com/folke/lazy.nvim for more info
@@ -476,6 +487,9 @@ require('lazy').setup({
   {
     -- Main LSP Configuration
     'neovim/nvim-lspconfig',
+    opts = {
+      setup = {},
+    },
     dependencies = {
       -- Automatically install LSPs and related tools to stdpath for Neovim
       { 'williamboman/mason.nvim', config = true }, -- NOTE: Must be loaded before dependants
@@ -627,10 +641,12 @@ require('lazy').setup({
       --  - settings (table): Override the default settings passed when initializing the server.
       --        For example, to see the options for `lua_ls`, you could go to: https://luals.github.io/wiki/settings/
       local servers = {
-        clangd = {},
+        clangd = {
+          filetypes = { 'c', 'cpp', 'cuda', 'objc', 'objcpp' }, -- exclude .proto files
+        },
         gopls = {},
         pyright = {},
-        rust_analyzer = {},
+        -- rust_analyzer = {},
         dockerls = {}, -- dockerfile
         docker_compose_language_service = {}, -- docker compose file
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
@@ -710,7 +726,7 @@ require('lazy').setup({
         -- Disable "format_on_save lsp_fallback" for languages that don't
         -- have a well standardized coding style. You can add additional
         -- languages here or re-enable it for the disabled ones.
-        local disable_filetypes = { c = true, cpp = true }
+        local disable_filetypes = {} -- { c = true, cpp = true }
         local lsp_format_opt
         if disable_filetypes[vim.bo[bufnr].filetype] then
           lsp_format_opt = 'never'
