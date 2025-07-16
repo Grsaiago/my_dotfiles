@@ -215,14 +215,6 @@ vim.api.nvim_create_autocmd('TextYankPost', {
   end,
 })
 
--- Procura por uma venv e já aciona ela caso seja um arquivo python
-vim.api.nvim_create_autocmd('FileType', {
-  pattern = { 'python' },
-  callback = function()
-    require('swenv.api').auto_venv()
-  end,
-})
-
 -- If i ever need to retype files, just use this function
 local function set_filetype(pattern, filetype)
   vim.api.nvim_create_autocmd({ 'BufRead', 'BufNewFile' }, {
