@@ -16,11 +16,10 @@ return {
         'zbirenbaum/copilot.lua',
         cmd = 'Copilot',
         build = ':Copilot auth',
-        config = function()
-          require('copilot').setup()
-        end,
+        opts = {},
       },
     },
+    ---@type VectorCode.Opts
     opts = {
       strategies = {
         chat = {
@@ -34,11 +33,11 @@ return {
         vectorcode = {
           ---@type VectorCode.CodeCompanion.ExtensionOpts
           tool_group = {
-            -- this will register a tool group called `@vectorcode_toolbox` that contains all 3 tools
+            -- this will register a tool group called @vectorcode_toolbox that contains all 3 tools
             enabled = true,
-            -- a list of extra tools that you want to include in `@vectorcode_toolbox`.
+            -- a list of extra tools that you want to include in @vectorcode_toolbox.
             -- if you use @vectorcode_vectorise, it'll be very handy to include
-            -- `file_search` here.
+            -- file_search here.
             extras = {
               'file_search',
             },
