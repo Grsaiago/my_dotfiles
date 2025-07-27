@@ -192,13 +192,12 @@ vim.keymap.set('n', '<C-l>', '<C-w><C-l>', { desc = 'Move focus to the right win
 vim.keymap.set('n', '<C-j>', '<C-w><C-j>', { desc = 'Move focus to the lower window' })
 vim.keymap.set('n', '<C-k>', '<C-w><C-k>', { desc = 'Move focus to the upper window' })
 
-
 -- Meus keymaps
-vim.keymap.set('n', '<leader>tt', ':botright split | term<cr>i', { desc = '[T]oggle [T]erminal' })
-
 vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { silent = true, desc = 'Move code snippet up' })
 vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { silent = true, desc = 'Move code snippet down' })
 vim.keymap.set('x', '<C-p>', '"_dP', { silent = true, desc = "Don't lose a word when pasting" })
+
+vim.keymap.set('n', '<leader>tt', ':botright split | term<cr>i', { desc = '[T]oggle [T]erminal' })
 
 vim.keymap.set('v', '<leader>y', ':%y+<CR>', { silent = true, noremap = true, desc = 'Copy to windows clippboard' })
 
@@ -342,6 +341,7 @@ require('lazy').setup({
 
       -- Document existing key chains
       spec = {
+        { '<leader>a', group = '[A]I stuff', mode = { 'n' } },
         { '<leader>c', group = '[C]ode', mode = { 'n', 'x' } },
         { '<leader>d', group = '[D]ocument' },
         { '<leader>r', group = '[R]ename' },
@@ -847,6 +847,7 @@ require('lazy').setup({
             group_index = 0,
           },
           { name = 'nvim_lsp' },
+          { name = 'copilot' },
           { name = 'luasnip' },
           { name = 'path' },
         },
