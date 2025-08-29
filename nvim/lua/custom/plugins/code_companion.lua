@@ -10,29 +10,12 @@ return {
         build = 'uv tool upgrade vectorcode',
         dependencies = { 'nvim-lua/plenary.nvim' },
       },
-      'nvim-lua/plenary.nvim',
-      'nvim-treesitter/nvim-treesitter',
-      {
-        -- https://github.com/zbirenbaum/copilot.lua?tab=readme-ov-file#setup-and-configuration
-        'zbirenbaum/copilot.lua',
-        cmd = 'Copilot',
-        dependencies = {
-          {
-            'zbirenbaum/copilot-cmp',
-            opts = {},
-          },
-        },
-        opts = {
-          panel = { enabled = false }, -- for some reason, we have to use this option so the plugin works when opening a new codecompanion chat
-          filetypes = {
-            codecompanion = true,
-          },
-        },
-      },
+      { 'nvim-lua/plenary.nvim' },
+      { 'nvim-treesitter/nvim-treesitter', build = 'TSUpdate' },
     },
     keys = {
       { '<leader>aa', ':Copilot auth<CR>', mode = 'n', desc = '[A]uth copilot', silent = true },
-      { '<leader>act', ':CodeCompanionChat Toggle<CR>', mode = 'n', desc = '[C]hat [T]oggle', silent = true },
+      { '<leader>at', ':CodeCompanionChat Toggle<CR>', mode = 'n', desc = '[T]oggle/Start a new chat', silent = true },
       { '<leader>ac', ':CodeCompanionChat<CR>', mode = 'n', desc = '[C]reate a new chat', silent = true },
     },
     opts = {
